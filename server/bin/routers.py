@@ -20,8 +20,12 @@ def post_audio():
     })
     asr_response = json.dumps(result, ensure_ascii=False)   
     if 'result' in result:
-        result['result'] = util.convert(result['result'][0])
-        app.logger.info("first -" + asr_response +  "second - [" + result['result'] + "]")
+        try:
+            result['result'] = util.convert(result['result'][0])
+            app.logger.info("first -" + asr_response +  "second - [" + result['result'] + "]")
+        except Exception, e:
+	    app.logger.error("first -" + asr_response + "second -[" + e.message + "]")
+            result['result'] = ''       
     else:
     	app.logger.info("first -" + asr_response + " - " + "[no result]")
     response = json.dumps(result, ensure_ascii=False)
